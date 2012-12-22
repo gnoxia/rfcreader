@@ -25,12 +25,6 @@ class HTMLRichTextDisplayer(BasicDisplayer):
 		self.docEntryElement.titleType = ""
 		self.dictContentSearch = {}
 
-	def OnURL(self, event):
-		key = event.GetString()
-		print key
-		if key in self.dictContentSearch:
-			self.rc.ShowPosition(self.dictContentSearch.get(key))
-
 	def displaybegin(self, tag, attrs):
 		if tag == 'link' or tag == 'meta' or tag == 'style' or tag == 'script':
 			self.tag = True
@@ -81,7 +75,14 @@ class HTMLRichTextDisplayer(BasicDisplayer):
 
 		self.rc.WriteText(data)
 		
-	
+	def OnURL(self, event):
+		key = event.GetString()
+		print key
+		if key in self.dictContentSearch:
+			self.rc.ShowPosition(self.dictContentSearch.get(key))
 	def SetPosition(self, pos):
+		self.rc.ShowPosition(self.rc.GetLastPosition())
 		self.rc.ShowPosition(pos)
 		
+		
+

@@ -4,8 +4,7 @@ import wx.richtext as rt
 import wx
 import htmlparser as rrhp
 import htmlrichtextdisplayer as rrhrtd
-from StringIO import StringIO
-#from dataconnector import DataConnector
+
 
 class ViewController:
     """ Basic view controller. """
@@ -130,11 +129,9 @@ class RigthViewController(ViewController):
                     displayer = rrhrtd.HTMLRichTextDisplayer(rich)
                     parser = rrhp.HTMLParser(displayer)
                     print "Read data"
-                
                     data = self._dataConnector.Read(str(userSelection["no"]))
-                    #print "Parse data"
                     parser.feed(data.decode())
-
+                    parser.close()
                     bsizer = wx.BoxSizer()
                     bsizer.Add(rich, 1, wx.EXPAND | wx.ALL)
                     page.SetSizerAndFit(bsizer)
@@ -190,7 +187,7 @@ class RigthViewController(ViewController):
         try:
             print(event)
             valueDict = self._pageStore[str(self._currentPageId)]
-            print valueDict
+            #print valueDict
             displayer = valueDict["displayer"]
             displayer.SetPosition(event)
         except KeyError:
