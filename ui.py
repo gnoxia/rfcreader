@@ -27,11 +27,22 @@ class UserSelectionDialog(wx.Dialog):
         if event.GetId() == wx.ID_OK:
             try:
                 number = int(self.textCtrl.GetValue())
+                if number <= 0:
+                    dlg = wx.MessageDialog(
+                        parent=self,
+                        message='Please enter a valid positive integer.',
+                        caption='Error',
+                        style=wx.OK | wx.ICON_ERROR | wx.STAY_ON_TOP,
+                        pos=(200,200)
+                    )
+                    dlg.ShowModal()
+                    dlg.Destroy()
+                    return
                 self.EndModal(event.GetId())
             except ValueError:
                 dlg = wx.MessageDialog(
                     parent=self,
-                    message='Please enter a valid integer',
+                    message='Please enter a valid integer.',
                     caption='Error',
                     style=wx.OK | wx.ICON_ERROR | wx.STAY_ON_TOP,
                     pos=(200,200)
@@ -176,7 +187,7 @@ class ApplicationUi(wx.Frame):
         self.leftPanel = LeftPanelView(splitter)
 
         splitter.SplitVertically(self.leftPanel, self.rightPanel)
-        splitter.SetMinimumPaneSize(100)
+        splitter.SetMinimumPaneSize(200)
         
         self.SetBackgroundColour("white")
         self.menuBar = wx.MenuBar()

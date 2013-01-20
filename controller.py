@@ -2,9 +2,11 @@
 import ui
 import wx.richtext as rt
 import wx
-import htmlparser as rrhp
 import htmlrichtextdisplayer as rrhrtd
-
+import htmlparser
+from lxml import etree
+from lxml import cssselect
+from lxml import html
 
 class ViewController:
     """ Basic view controller. """
@@ -127,17 +129,23 @@ class RigthViewController(ViewController):
                     rich = rt.RichTextCtrl(page, wx.ID_ANY)
                     rich.SetEditable(False)
                     displayer = rrhrtd.HTMLRichTextDisplayer(rich)
-                    parser = rrhp.HTMLParser(displayer)
                     print "Read data"
                     data = self._dataConnector.Read(str(userSelection["no"]))
+                    print "Create dom"
+                    parser = etree.HTMLParser(target = htmlparser.HTMLParser(displayer))
                     parser.feed(data.decode())
-                    parser.close()
+                    tree = html.document_fromstring(data.decode())
+                    print tree
+                    for e in tree.cssselect("span.h1"):
+                        print e.text_content()
+                    
                     bsizer = wx.BoxSizer()
                     bsizer.Add(rich, 1, wx.EXPAND | wx.ALL)
                     page.SetSizerAndFit(bsizer)
 
                     self._targetUiView.UpdateUi(page)
-                except Exception:
+                except Exception as e:
+                    print "Exception: ... %s" % e                    
                     self._targetUiView.RemovePage(page)
                     return
                 print "Add to store"
