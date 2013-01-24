@@ -3,13 +3,15 @@
 class BasicDisplayer:
 	def __init__(self):
 		pass
+	@classmethod
 	def displaybegin(self, tag, attrs):
-		""" Do nothing """
-		print "begin"
-
+		""" Not implement """
+		pass
+	@classmethod
 	def displayend(self, tag):
-		""" Do nothing """
-		print "end"
+		""" Not implement """
+		pass
+	@classmethod
 	def displaydata(self, data, type):
-		""" Do nothing """
-		print "data"
+		""" Not implement """
+		pass

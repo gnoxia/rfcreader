@@ -14,25 +14,25 @@ class HTMLParser():
 		try:
 			self.displayer.displaybegin(tag, attrs)
 		except Exception as e:
-			print e		
+			print 'ignore:', e		
 
 	def end(self, tag):
 		try:
 			self.displayer.displayend(tag)
 		except Exception as e:
-			print e
+			print 'ignore:',e
 		
 	def data(self, data):
 		try:
 			self.displayer.displaydata(data, 0)
 		except Exception as e:
-			print e
+			print 'ignore:',e
 		
 	def comment(self, data):
 		try:
 			self.displayer.displaydata(data, 1)
 		except Exception as e:
-			print e
+			print 'ignore:',e
 			
 	def close(self):
 		pass

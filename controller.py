@@ -4,9 +4,10 @@ import wx.richtext as rt
 import wx
 import htmlrichtextdisplayer as rrhrtd
 import htmlparser
+import tinycss
 from lxml import etree
-from lxml import cssselect
 from lxml import html
+
 
 class ViewController:
     """ Basic view controller. """
@@ -128,16 +129,33 @@ class RigthViewController(ViewController):
                 try:
                     rich = rt.RichTextCtrl(page, wx.ID_ANY)
                     rich.SetEditable(False)
-                    displayer = rrhrtd.HTMLRichTextDisplayer(rich)
+                    cssStyleSheet = {}
+                    displayer = rrhrtd.HTMLRichTextDisplayer(rich, css = cssStyleSheet)
+                    
                     print "Read data"
                     data = self._dataConnector.Read(str(userSelection["no"]))
+                    tree = html.document_fromstring(data.decode())
+                    
+                    print 'Get css'
+                    # Fetch and parse css.
+                    cssParser = tinycss.make_parser('page3')
+
+                    for e in tree.cssselect('style'):                        
+                        stylesheet = cssParser.parse_stylesheet(e.text_content())
+                    import re
+                    for rule in stylesheet.rules:
+                        if not rule.at_keyword:
+                            l = re.split(' |,', rule.selector.as_css())
+                            for keyword in l:                                
+                                l = []
+                                for decl in rule.declarations:
+                                    l.append({ decl.name : decl.value.as_css()})
+                                cssStyleSheet[keyword] = l
+                    #print cssStyleSheet
+
                     print "Create dom"
                     parser = etree.HTMLParser(target = htmlparser.HTMLParser(displayer))
                     parser.feed(data.decode())
-                    tree = html.document_fromstring(data.decode())
-                    print tree
-                    for e in tree.cssselect("span.h1"):
-                        print e.text_content()
                     
                     bsizer = wx.BoxSizer()
                     bsizer.Add(rich, 1, wx.EXPAND | wx.ALL)
@@ -170,7 +188,7 @@ class RigthViewController(ViewController):
     # UI Callback Actions
     def OnPageClosingCallback(self, event):
         del self._pageStore[event]
-        print self._pageStore
+        #print self._pageStore
 
     def OnPageClosedCallback(self, event):
         if event == "-1":
@@ -228,7 +246,7 @@ class RFCViewController():
     def NotifyPageAdded(self, source, event):
         print "Notify Page Added"
         if source == self._rvController:
-            print source, event
+            #print source, event
             self._lvController.OnUpdate("pageAdded", event)
 
     def NotifyPagePositionChanged(self, source, event):

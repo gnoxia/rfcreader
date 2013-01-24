@@ -4,6 +4,9 @@ import wx.lib.agw.flatnotebook as fnb
 
 # Utilities UIs
 class UserSelectionDialog(wx.Dialog):
+    """
+    Selection box for fetching specified RFC document.
+    """
     def __init__(self, parent, title):
         wx.Dialog.__init__(self, parent, title = title)
         

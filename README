@@ -1,0 +1,12 @@
+
+RFC reader is aiming at who have heavy works on reading the rfc docs. 
+
+Currently, it only provides a catalog service for readers, and not full featured.
+It will download specified rfc html from intenet first then store it locally for next time.
+
+
+TODO:
+
+1. Improve css and html rendering part.
+2. Add search function.
+3. Add notes function.
