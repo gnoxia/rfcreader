@@ -1,12 +1,17 @@
 
 RFC reader is aiming at who have heavy works on reading the rfc docs. 
 
-Currently, it only provides a catalog service for readers, and not full featured.
-It will download specified rfc html from intenet first then store it locally for next time.
-
+Currently, 
+1. Provide a simple catalog service for readers, and not full featured.
+2. Provide offline rfc document reading.
+3. Provide multi-tabs UI for readers, who could flexibly switch among many rfc documents.
 
 TODO:
-
 1. Improve css and html rendering part.
 2. Add search function.
 3. Add notes function.
+
+Environment Setup:
+1. lxml for parsing html. For usage and installation, please see http://lxml.de .
+2. tinycss for parsing css. For usage and installation, please see http://packages.python.org/tinycss .
+
